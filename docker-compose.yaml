@@ -45,15 +45,19 @@ services:
       #- ./src/wordpress/wp-config.php:/var/www/html/wp-config.php
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.rule=Host(`roest.datafortress.cloud`)"
+      - "traefik.http.routers.wordpress.rule=Host(`roest-dev.datafortress.cloud`)"
       - "traefik.http.routers.wordpress.tls=true"
       #- "traefik.http.routers.wordpress.entrypoints=websecure"
       - "traefik.http.routers.wordpress.tls.certresolver=le"
-
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+          cpus: 1.5
 
   db:
-    image: mysql:5.7
-    container_name: roestbrueder_mysql
+    image: mariadb:latest
+    container_name: roestbrueder_mariadb
     volumes:
       - ./src/wordpress/sql:/var/lib/mysql
     restart: always
